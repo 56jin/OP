@@ -65,7 +65,7 @@
             this.$http({
                 method: 'DELETE',
                 url: baseUrl + '/deposit/interest',
-                params: depositInterest
+                params: {id : depositInterest.id}
             }).success((function (_this) {
                 return function (data, status, headers) {
                     _this.$log.info("Successfully delete depositInterest - status " + status);
