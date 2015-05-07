@@ -15,6 +15,7 @@
       this.$log.debug("constructing CustomerCtrl");
       this.customers = [];
       this.customer = this.$rootScope.customer || {};
+      this.reward = {};
       this.$rootScope.customer = {};
       this.tabIndex = 1;
       this.pager = {filter: {EQS_telephone: ''}};
@@ -80,7 +81,48 @@
           }
         ]
       };
+
+      this.$scope.rewardItensOptions = {
+          data: 'rewardItensPager.list',
+          enablePaging: true,
+          showFooter: true,
+          multiSelect: false,
+          useExternalSorting: true,
+          i18n: "zh-cn",
+          enableColumnResize: true,
+          showColumnMenu: true,
+          totalServerItems: 'rewardItensPager.count',
+          pagingOptions: {
+              pageSizes: [5, 10, 15],
+              pageSize: 10,
+              currentPage: 1
+          },
+          columnDefs: [
+              {
+                  field: "rewardTime",
+                  displayName: "交易日期"
+              },
+              {
+                  field: "scene",
+                  displayName: "活动类型"
+              },
+              {
+                  field: "rewardType",
+                  displayName: "奖励类型"
+              },
+              {
+                  field: "rewardNum",
+                  displayName: "奖励数量/金额"
+              },
+              {
+                  field: "exchangeMoney",
+                  displayName: "兑换金额"
+              }
+          ]
+      };
     }
+
+
 
     CustomerCtrl.prototype.search = function () {
       this.$log.debug("search()");
@@ -117,6 +159,47 @@
           };
         })(this));
       }
+    };
+
+    CustomerCtrl.prototype.findReward = function () {
+        this.$log.debug("findReferrerDetails()");
+        if ("" !== this.pager.filter.EQS_telephone) {
+            this.CustomerService.findReward(this.pager.filter.EQS_telephone).then((function (_this) {
+                return function (data) {
+                    if(!data.value){
+                        _this.toaster.pop('warning', '查询失败', '没有该手机号');
+                    } else {
+                        _this.toaster.pop('success', '查询成功', '');
+                    }
+                    return _this.reward = data.value;
+                };
+            })(this), (function (_this) {
+                return function (error) {
+                    _this.$log.error("Unable to get Customers: " + error);
+                    return _this.error = error;
+                };
+            })(this));
+        }
+        return this.findRewardItems();
+    };
+
+    CustomerCtrl.prototype.findRewardItems = function () {
+        this.$log.debug("findRewardItems()");
+        this.pager.pageSize = this.$scope.rewardItensOptions.pagingOptions.pageSize;
+        this.pager.pageNum = this.$scope.rewardItensOptions.pagingOptions.currentPage;
+        if ("" !== this.pager.filter.EQS_telephone) {
+            return this.CustomerService.findRewardItems(this.pager).then((function (_this) {
+                return function (data) {
+                    _this.$log.debug("Promise returned  RewardItems");
+                    return _this.$scope.rewardItensPager = data.value;
+                };
+            })(this), (function (_this) {
+                return function (error) {
+                    _this.$log.error("Unable to get BankCards: " + error);
+                    return _this.error = error;
+                };
+            })(this));
+        }
     };
 
     CustomerCtrl.prototype.findCustomerByMobile = function () {

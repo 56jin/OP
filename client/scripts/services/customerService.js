@@ -165,6 +165,46 @@
             return deferred.promise;
         };
 
+        CustomerService.prototype.findReward = function (mobile) {
+            var deferred;
+            this.$log.debug("findCustomerByMobile " + (angular.toJson(mobile, true)));
+            deferred = this.$q.defer();
+            this.$http.get(baseUrl + '/customer/reward/' + mobile).success((function (_this) {
+                return function (data, status, headers) {
+                    _this.$log.info("Successfully customer - status " + status);
+                    return deferred.resolve(data);
+                };
+            })(this)).error((function (_this) {
+                return function (data, status, headers) {
+                    _this.$log.error("Failed to customer - status " + status);
+                    return deferred.reject(data);
+                };
+            })(this));
+            return deferred.promise;
+        };
+
+        CustomerService.prototype.findRewardItems = function (pager) {
+            var deferred;
+            this.$log.debug("findRewardItems");
+            deferred = this.$q.defer();
+            this.$http.get(baseUrl + '/customer/rewarditems', {
+                headers: {
+                    'params': angular.toJson(pager)
+                }
+            }).success((function (_this) {
+                return function (data, status, headers) {
+                    _this.$log.info("Successfully find bank cards - status " + status);
+                    return deferred.resolve(data);
+                };
+            })(this)).error((function (_this) {
+                return function (data, status, headers) {
+                    _this.$log.error("Failed to find bank cards - status " + status);
+                    return deferred.reject(data);
+                };
+            })(this));
+            return deferred.promise;
+        };
+
         CustomerService.prototype.findFundTrades = function (pager) {
             var deferred;
             this.$log.debug("findFundTrades");
