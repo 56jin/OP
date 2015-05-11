@@ -19,8 +19,9 @@
           <input type="number" name="mobile" class="form-control" ng-model="cl.pager.filter.EQS_telephone"
                  placeholder="手机号" ng-maxlength="11" ng-minlength="11">
           <span class="input-group-btn">
-            <button class="btn btn-default" type="submit" ng-disabled="!form.$valid"><span class="glyphicon glyphicon-search"
-                                                                aria-hidden="true"></span></button>
+            <button class="btn btn-default" type="submit" ng-disabled="!form.$valid"><span
+              class="glyphicon glyphicon-search"
+              aria-hidden="true"></span></button>
           </span>
         </div>
       </div>
@@ -80,6 +81,7 @@
         </div>
       </div>
       <div class="row col-md-12">
+        <br/>
         <div class=" col-md-6">
           <form class="form-horizontal col-md-12" role="form">
 
@@ -125,13 +127,27 @@
         </div>
       </div>
       <div class="row col-md-12">
-
+        <br/>
         <div class="col-md-6">
           <div class="col-md-12">
             绑定银行卡信息
             <hr>
-            <div class="well well-lg">
-              <div class="gridStyle" ng-grid="bankCardOptions" ng-page-changed="cl.findBankCards()"></div>
+            <div class="table-responsive">
+              <table class="table table-striped">
+                <thead>
+                <th>银行名称</th>
+                <th>银行卡号</th>
+                </thead>
+                <tbody>
+                <tr ng-repeat="bankCard in cl.bankCards">
+                  <td ><span>{{bankCard.bankName}}</span></td>
+                  <td>{{bankCard.bankCardNo}}</td>
+                </tr>
+                <tr ng-show="cl.bankCards.length == 0">
+                  <td colspan="2">没有数据</td>
+                </tr>
+                </tbody>
+              </table>
             </div>
           </div>
 
@@ -144,59 +160,59 @@
       </div>
     </tab>
     <tab heading="基金交易" select="cl.findReferrerDetails()" ng-click="cl.tabIndex = 3">
-        <div class="well well-lg">
-            <div class="gridStyle" ng-grid="referrerDetailOptions" ng-page-changed="cl.findReferrerDetails()"></div>
-        </div>
+      <div class="well well-lg">
+        <div class="gridStyle" ng-grid="referrerDetailOptions" ng-page-changed="cl.findReferrerDetails()"></div>
+      </div>
     </tab>
     <tab heading="奖励账户余额" select="cl.findReward()" ng-click="cl.tabIndex = 4">
 
-        <div class="row col-md-12">
-            <label class="control-label">姓名：</label>
-            <span ng-bind="cl.reward.customerName"></span>
+      <div class="row col-md-12">
+        <label class="control-label">姓名：</label>
+        <span ng-bind="cl.reward.customerName"></span>
 
-            <label class="control-label">手机号：</label>
-            <span ng-bind="cl.reward.mobile"></span>
+        <label class="control-label">手机号：</label>
+        <span ng-bind="cl.reward.mobile"></span>
+        <hr>
+      </div>
+
+      <div class="row col-md-12">
+        <label class="control-label">奖励账户余额：</label>
+        <span ng-bind="cl.reward.rewardAcctBalance"></span>
+
+        <label class="control-label">金豆数：</label>
+        <span ng-bind="cl.reward.goldBeanNum"></span>
+
+        <label class="control-label">可兑换：</label>
+        <span ng-bind="cl.customer.canExchangeBeans"></span>
+
+        <label class="control-label">已兑换：</label>
+        <span ng-bind="cl.reward.alreadyExchangeBeans"></span>
+        <hr>
+      </div>
+
+      <div class="row col-md-12">
+        <label class="control-label">红包金额：</label>
+        <span ng-bind="cl.reward.redPacketNum"></span>
+
+        <label class="control-label">可取现：</label>
+        <span ng-bind="cl.reward.canExchangeRedPacket"></span>
+
+        <label class="control-label">已取现：</label>
+        <span ng-bind="cl.reward.alreadyExchangeRedPacket"></span>
+        <hr>
+      </div>
+
+      <div class="row col-md-12">
+        <div class="col-md-6">
+          <div class="col-md-12">
+            奖励账户明细
             <hr>
-        </div>
-
-        <div class="row col-md-12">
-            <label class="control-label">奖励账户余额：</label>
-            <span ng-bind="cl.reward.rewardAcctBalance"></span>
-
-            <label class="control-label">金豆数：</label>
-            <span ng-bind="cl.reward.goldBeanNum"></span>
-
-            <label class="control-label">可兑换：</label>
-            <span ng-bind="cl.customer.canExchangeBeans"></span>
-
-            <label class="control-label">已兑换：</label>
-            <span ng-bind="cl.reward.alreadyExchangeBeans"></span>
-            <hr>
-        </div>
-
-        <div class="row col-md-12">
-            <label class="control-label">红包金额：</label>
-            <span ng-bind="cl.reward.redPacketNum"></span>
-
-            <label class="control-label">可取现：</label>
-            <span ng-bind="cl.reward.canExchangeRedPacket"></span>
-
-            <label class="control-label">已取现：</label>
-            <span ng-bind="cl.reward.alreadyExchangeRedPacket"></span>
-            <hr>
-        </div>
-
-        <div class="row col-md-12">
-            <div class="col-md-6">
-                <div class="col-md-12">
-                    奖励账户明细
-                    <hr>
-                    <div class="well well-lg">
-                        <div class="gridStyle" ng-grid="rewardItensOptions" ng-page-changed="cl.findRewardItems()"></div>
-                    </div>
-                </div>
+            <div class="well well-lg">
+              <div class="gridStyle" ng-grid="rewardItensOptions" ng-page-changed="cl.findRewardItems()"></div>
             </div>
+          </div>
         </div>
+      </div>
     </tab>
 
   </tabset>

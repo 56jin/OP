@@ -14,6 +14,7 @@
       this.toaster = toaster;
       this.$log.debug("constructing CustomerCtrl");
       this.customers = [];
+      this.bankCards = [];
       this.customer = this.$rootScope.customer || {};
       this.reward = {};
       this.$rootScope.customer = {};
@@ -232,6 +233,7 @@
         return this.CustomerService.findBankCards(this.pager).then((function (_this) {
           return function (data) {
             _this.$log.debug("Promise returned " + data.value.list.length + " BankCards");
+            this.bankCards = data.value;
             return _this.$scope.bankCardPager = data.value;
           };
         })(this), (function (_this) {
